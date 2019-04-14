@@ -1,0 +1,97 @@
+name:                aws-shim
+version:             0.1.0.0
+github:              "cjdev/aws-shim"
+license:             BSD3
+author:              "CJ Engineering"
+maintainer:          "CJ_Fintech_Squad@cj.com"
+copyright:           "2019 CJ Affiliate"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+synopsis:            Opinionated Amazonka Wrappers focused on ease of use
+category:            API
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/githubuser/aws-shim#readme>
+
+dependencies:
+  - aeson
+  - amazonka
+  - amazonka-core
+  - amazonka-ses
+  - amazonka-sqs
+  - amazonka-s3
+  - base
+  - conduit
+  - bytestring
+  - containers
+  - exceptions
+  - freer-simple
+  - hashable
+  - HDBC
+  - http-client
+  - lens
+  - split
+  - text
+  - text-conversions
+  - text-show
+  - time
+  - transformers
+  - unordered-containers
+  - vector
+  - wreq
+
+library:
+  source-dirs: src
+
+tests:
+  aws-shim-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - aws-shim
+      - data-default
+      - QuickCheck
+      - quickcheck-assertions
+      - quickcheck-instances
+      - tasty
+      - tasty-hunit
+      - tasty-quickcheck
+
+
+default-extensions:
+  - ConstraintKinds
+  - DataKinds
+  - DefaultSignatures
+  - DeriveAnyClass
+  - DeriveFunctor
+  - DeriveGeneric
+  - ExistentialQuantification
+  - FlexibleContexts
+  - FlexibleInstances
+  - FunctionalDependencies
+  - GADTs
+  - MonoLocalBinds
+  - GeneralizedNewtypeDeriving
+  - KindSignatures
+  - LambdaCase
+  - MultiParamTypeClasses
+  - NamedFieldPuns
+  - OverloadedStrings
+  - RankNTypes
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - TupleSections
+  - TypeApplications
+  - TypeOperators
+  - TypeFamilies
+  - InstanceSigs
