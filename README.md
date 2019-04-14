@@ -1,6 +1,6 @@
-# Amazonka-Wrapper
+# amazonka-wrapper
 
-Simplifying wrapper for Amazonka's AWS SDK.  Opinionated towards default environments and type classes implementations.
+Simplifying wrapper for Amazonka's AWS SDK, opinionated towards default environments and type classes implementations.
 
 ## Examples
 
