@@ -3,7 +3,7 @@ module Internal where
 import Data.Text (Text)
 --
 
-newtype EmailAddress = EmailAddress { email :: Text }
+newtype EmailAddress = EmailAddress { emailAddress :: Text }
     deriving (Eq, Show)
 
 data Email = Email {
