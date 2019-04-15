@@ -3,12 +3,12 @@ module Internal where
 import Data.Text (Text)
 --
 
-newtype EmailAddress = EmailAddress { emailAddress :: Text }
+newtype MailExchangeEmailAddress = EmailAddress { emailAddress :: Text }
     deriving (Eq, Show)
 
-data Email = Email {
-    toAddresses :: [EmailAddress],
-    fromAddress :: EmailAddress,
+data MailExchangeEmail = Email {
+    toAddresses :: [MailExchangeEmailAddress],
+    fromAddress :: MailExchangeEmailAddress,
     emailSubject :: Text,
     emailBody :: Text
     } deriving (Eq, Show)

@@ -5,13 +5,14 @@ import Data.ByteString (ByteString)
 import Internal
 --
 
-type Container = Text
-type Key = Text
-type Value = ByteString
+type ObjectContainer = Text
+type ObjectKey       = Text
+type ObjectValue     = ByteString
+
 class ObjectStore m where
-    getObject   :: Container -> Key -> m Value
-    putObject   :: Container -> Key -> Value -> m ()
-    listObjects :: Container -> m [Key]
+    getObject   :: ObjectContainer -> ObjectKey -> m ObjectValue
+    putObject   :: ObjectContainer -> ObjectKey -> ObjectValue -> m ()
+    listObjects :: ObjectContainer -> m [ObjectKey]
 
 class MailExchange m where
-    sendMail :: Email -> m ()
+    sendMail :: MailExchangeEmail -> m ()
