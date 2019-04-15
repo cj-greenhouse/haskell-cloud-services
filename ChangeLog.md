@@ -1,3 +1,3 @@
-# Changelog for aws-shim
+# Changelog for haskell-aws
 
 ## Unreleased changes

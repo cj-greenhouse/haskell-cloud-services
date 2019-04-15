@@ -1,6 +1,6 @@
-name:                aws-shim
+name:                haskell-aws
 version:             0.1.0.0
-github:              "cjdev/aws-shim"
+github:              "cj-greenhouse/haskell-aws"
 license:             BSD3
 author:              "CJ Engineering"
 maintainer:          "CJ_Fintech_Squad@cj.com"
@@ -11,13 +11,13 @@ extra-source-files:
 - ChangeLog.md
 
 # Metadata used when publishing your package
-synopsis:            Opinionated Amazonka Wrappers focused on ease of use
+synopsis:            Aws Wrapper focused on ease of use
 category:            API
 
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/aws-shim#readme>
+description:         Please see the README on GitHub at <https://github.com/cj-greenhouse/haskell-aws/#readme>
 
 dependencies:
   - aeson
@@ -50,7 +50,7 @@ library:
   source-dirs: src
 
 tests:
-  aws-shim-test:
+  haskel-aws-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -58,7 +58,7 @@ tests:
       - -rtsopts
       - -with-rtsopts=-N
     dependencies:
-      - aws-shim
+      - haskell-aws
       - data-default
       - QuickCheck
       - quickcheck-assertions

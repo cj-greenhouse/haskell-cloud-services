@@ -1,6 +1,6 @@
 ### Haskell-Stack ###
 .stack-work/
-aws-shim.cabal
+haskell-aws.cabal
 *~
 
 ### Haskell ###
