@@ -1,6 +1,6 @@
 module Effect.SES where
 
-import Internal (Email(..), EmailAddress(emailAddress))
+import Internal (MailExchangeEmail(..), MailExchangeEmailAddress(emailAddress))
 import Control.Monad (void)
 import Control.Monad.Trans.AWS (runAWST, Region(..))
 import Control.Lens ((.~), set)
@@ -15,7 +15,7 @@ import Network.AWS.SES.Types (body, bText, content, destination, dToAddresses, m
 defaultEnvironment :: IO Env
 defaultEnvironment = set envRegion NorthVirginia <$> newEnv Discover
 
-sendEmailInSes :: Email -> IO ()
+sendEmailInSes :: MailExchangeEmail -> IO ()
 sendEmailInSes e = do
     env <- defaultEnvironment
     void $ runResourceT $ runAWST env $ send $ buildSESEmail
