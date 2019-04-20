@@ -7,7 +7,7 @@ Simplifying wrapper for AWS SDK
 ### Object Store
 
 ```
-import Network.AWS (newEnv, Credentials(..))
+import Network.AWS (newEnv, Credentials(Discover))
 
 instance S3Environment IO where
     s3Environment = newEnv Discover
@@ -20,8 +20,16 @@ instance ObjectStore <runtime implementation> where
 
 ### Mail Exchange
 
+```
+import Control.Monad.Trans.AWS (Region(NorthVirginia))
+import Network.AWS (newEnv, Credentials(Discover))
 
+instance MailExchange <runtime implementation> where
+    sendMail = sendMailInSES
 
+instance SESEnvironment IO where
+    sesEnvironment = set envRegion NorthVirginia <$> newEnv Discover
+```
 
 ## Links
 

@@ -1,10 +1,11 @@
 module ObjectStore (
     ObjectStore(..),
+    S3Environment(..),
     getObjectInS3,
     putObjectInS3,
     listObjectsInS3
 ) where
-
+--
 import Conduit
 import Control.Exception(try, SomeException)
 import Control.Lens (view)
@@ -21,7 +22,7 @@ import qualified Network.AWS.S3.GetObject as AWS (getObject, gorsBody)
 import qualified Network.AWS.S3.PutObject as AWS (putObject)
 import Network.AWS.S3.ListObjectsV2 (listObjectsV2, lovrsContents)
 import qualified Network.AWS.S3.Types as AWS (ObjectKey(..), BucketName(..), oKey, keyName)
-
+--
 type ObjectContainer = Text
 type ObjectKey       = Text
 type ObjectValue     = B.ByteString
