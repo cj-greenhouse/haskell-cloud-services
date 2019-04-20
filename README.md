@@ -1,24 +1,30 @@
-# amazonka-wrapper
+# haskell-aws
 
-Simplifying wrapper for Amazonka's AWS SDK, opinionated towards default environments and type classes implementations.
+Simplifying wrapper for AWS SDK
 
-## Examples
+## Example Wiring
 
-Example effect wiring using provided type classes and implementations
+### Object Store
 
 ```
-type Runtime = ...
+import Network.AWS (newEnv, Credentials(..))
 
-instance ObjectStore Runtime where
-    getObject   = getS3Object
-    putObject   = putS3Object
-    listObjects = listS3Objects
+instance S3Environment IO where
+    s3Environment = newEnv Discover
+
+instance ObjectStore <runtime implementation> where
+    getObject   = getObjectInS3
+    putObject   = putObjectInS3
+    listObjects = listObjectsInS3
 ```
 
-## Reference
+### Mail Exchange
 
-* Amazonka: Comprehensive Amazon Web Services SDK
-    * [Hackage](https://hackage.haskell.org/package/amazonka)
-    * [GitHub](https://github.com/brendanhay/amazonka)
+
+
+
+## Links
+
+* Amazonka [[Hackage](https://hackage.haskell.org/package/amazonka)] [[GitHub](https://github.com/brendanhay/amazonka)]
 
 

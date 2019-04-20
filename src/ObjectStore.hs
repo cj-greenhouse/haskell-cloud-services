@@ -31,61 +31,41 @@ class ObjectStore m where
     putObject   :: ObjectContainer -> ObjectKey -> ObjectValue -> m ()
     listObjects :: ObjectContainer -> m [ObjectKey]
 
--- | get content to bucket using default credentails
-getObjectInS3 :: ObjectContainer -> ObjectKey -> IO ObjectValue
-getObjectInS3 bucket key = do
-    env <- defaultEnvironment
-    getObjectInS3ForEnv env bucket key
+class S3Environment m where
+    s3Environment :: m Env
 
--- | get content to bucket using provided credentials
-getObjectInS3ForEnv :: (HasEnv env) => env -> ObjectContainer -> ObjectKey -> IO ObjectValue
-getObjectInS3ForEnv env bucket key = do
+-- | get content to bucket using provided S3 credentials
+getObjectInS3 :: (Monad IO, S3Environment IO) => ObjectContainer -> ObjectKey -> IO ObjectValue
+getObjectInS3 bucketName objectKey = do
+    env <- s3Environment
     l <- runResourceT . runAWST env $ do
-        rs <- view AWS.gorsBody <$> (AWS.send $ AWS.getObject (AWS.BucketName bucket) (AWS.ObjectKey key))
+        rs <- view AWS.gorsBody <$> (AWS.send $ AWS.getObject (AWS.BucketName bucketName) (AWS.ObjectKey objectKey))
         sinkBody rs sinkList
     pure $ B.concat l
 
--- | put content to bucket using default credentails
-putObjectInS3 :: ObjectContainer -> ObjectKey -> ObjectValue -> IO ()
-putObjectInS3 bucket key content = do
-    env <- defaultEnvironment
-    putObjectInS3ForEnv env bucket key content
-
 -- | put content to bucket using provided credentials
-putObjectInS3ForEnv :: (HasEnv env) => env -> ObjectContainer -> ObjectKey -> ObjectValue -> IO ()
-putObjectInS3ForEnv env bucket key content = do
+putObjectInS3 :: (Monad IO, S3Environment IO) => ObjectContainer -> ObjectKey -> ObjectValue -> IO ()
+putObjectInS3 bucketName objectKey content = do
     let req = AWS.putObject
-                (AWS.BucketName bucket)
-                (AWS.ObjectKey key)
+                (AWS.BucketName bucketName)
+                (AWS.ObjectKey objectKey)
                 (Hashed $ toHashed content)
+    env <- s3Environment
     maybeSucceeded <- (try $ void $ runResourceT . runAWS env $ AWS.send req) :: IO (Either SomeException ())
     case maybeSucceeded of
         Left(err) -> putStrLn(show err)
         Right(_) -> pure ()
 
-listObjectsInS3 :: ObjectContainer -> IO [ObjectKey]
-listObjectsInS3 bucket = listObjectsInS3AllPages bucket
-
-listObjectsInS3AllPages :: (Monad m, RunInAWS m) => ObjectContainer -> m [ObjectKey]
-listObjectsInS3AllPages bucket = do
-    responseStream <- paginate $ listObjectsV2 $ AWS.BucketName bucket
-    let
-        ks = join $ view lovrsContents <$> responseStream
+listObjectsInS3 :: (Monad IO, S3Environment IO) => ObjectContainer -> IO [ObjectKey]
+listObjectsInS3 bucketName = do
+    responseStream <- paginate $ listObjectsV2 $ AWS.BucketName bucketName
+    let ks = join $ view lovrsContents <$> responseStream
     pure $  view  (AWS.keyName ' ') <$> (view AWS.oKey <$> ks)
-
-
--- TODO make this part of RUNINAWS ????
-defaultEnvironment :: IO Env
-defaultEnvironment = newEnv Discover
-
-class RunInAWS m where
-    paginate :: (AWSPager a) => a -> m [Rs a]
-
-instance RunInAWS IO where
-    paginate :: (AWSPager a) => a -> IO [Rs a]
-    paginate request = do
-        env <- defaultEnvironment
-        runResourceT $ runAWST env $ runConduit $ AWS.paginate request .| sinkList
+    where
+        paginate :: (AWSPager a) => a -> IO [Rs a]
+        paginate request = do
+            env <- s3Environment
+            runResourceT $ runAWST env $ runConduit $ AWS.paginate request .| sinkList
 
 
 
