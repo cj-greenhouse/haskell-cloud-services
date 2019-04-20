@@ -1,6 +1,6 @@
 module ObjectStore (
-    ObjectStore(..),
-    S3Environment(..),
+    ObjectStore (..),
+    S3Environment (..),
     getObjectInS3,
     putObjectInS3,
     listObjectsInS3
@@ -14,7 +14,7 @@ import Control.Monad.Trans.AWS (sinkBody, runAWST, Rs)
 import qualified Control.Monad.Trans.AWS as AWS (send, paginate)
 import qualified Data.ByteString as B (ByteString, concat)
 import Data.Text (Text)
-import Network.AWS (HasEnv, newEnv, Credentials(..), runAWS, runResourceT)
+import Network.AWS (runAWS, runResourceT)
 import Network.AWS.Data.Body (RqBody(Hashed), toHashed)
 import Network.AWS.Env (Env)
 import Network.AWS.Pager (AWSPager)
@@ -45,6 +45,7 @@ getObjectInS3 bucketName objectKey = do
     pure $ B.concat l
 
 -- | put content to bucket using provided credentials
+--TODO return the put response for inspection if needed??
 putObjectInS3 :: (Monad IO, S3Environment IO) => ObjectContainer -> ObjectKey -> ObjectValue -> IO ()
 putObjectInS3 bucketName objectKey content = do
     let req = AWS.putObject

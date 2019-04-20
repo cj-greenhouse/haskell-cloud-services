@@ -1,16 +1,16 @@
 module MailExchange (
-    MailExchange(..),
+    MailExchange (..),
     MailAddress,
     SESEnvironment,
     sendMailInSES
 ) where
 --
 import Control.Monad (void)
-import Control.Monad.Trans.AWS (runAWST, Region(NorthVirginia))
+import Control.Monad.Trans.AWS (runAWST)
 import Control.Lens ((.~), set)
 import Data.Function ((&))
 import Data.Text (Text)
-import Network.AWS (runResourceT, send, Credentials(Discover) )
+import Network.AWS (runResourceT, send)
 import Network.AWS.Env (Env, newEnv, envRegion)
 import Network.AWS.SES (SendEmail, sendEmail)
 import Network.AWS.SES.Types (body, bText, content, destination, dToAddresses, message)
@@ -27,6 +27,7 @@ class MailExchange m where
 class SESEnvironment m where
     sesEnvironment :: m Env
 
+--TODO return send mail response for inspection???
 sendMailInSES :: (Monad IO, SESEnvironment IO) => MailFromAddress -> MailToAddresses -> MailSubject -> MailBody -> IO ()
 sendMailInSES fromAddress toAddresses mailSubject mailBody = do
     env <- sesEnvironment

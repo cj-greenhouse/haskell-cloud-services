@@ -48,6 +48,8 @@ dependencies:
 
 library:
   source-dirs: src
+  ghc-options:
+    - -Wall
 
 tests:
   haskel-aws-test:
