@@ -14,26 +14,27 @@ import Network.AWS                                     (runResourceT, send)
 import Network.AWS.Env                                 (Env)
 import qualified Network.AWS.SQS.DeleteMessage  as SQS (deleteMessage)
 import qualified Network.AWS.SQS.ReceiveMessage as SQS (receiveMessage, rmrsMessages)
-import qualified Network.AWS.SQS.SendMessage    as SQS (sendMessage)
+import qualified Network.AWS.SQS.SendMessage    as SQS (sendMessage, smrsResponseStatus)
 import Network.AWS.SQS.Types                           (mReceiptHandle, mBody)
 --
-type MessageBody           = Text      --SQS limits to 256KB
-type MessageReceiptHandle  = Text
-type MessageQueueContainer = Text
+type MessageBody                = Text      --SQS limits to 256KB
+type MessageReceiptHandle       = Text
+type MessageQueueContainer      = Text
+type SendMessageResponseStatus  = Int
 
 class MessageQueue m where
-    sendMessage    :: MessageQueueContainer -> MessageBody -> m ()
+    sendMessage    :: MessageQueueContainer -> MessageBody -> m SendMessageResponseStatus
     receiveMessage :: MessageQueueContainer -> m [(Maybe MessageReceiptHandle, Maybe MessageBody)]
     deleteMessage  :: MessageQueueContainer -> MessageReceiptHandle -> m ()
 
 class SQSEnvironment m where
     sqsEnvironment :: m Env
 
---TODO return the response for inspection if needed??
-sendMessageInSQS :: (Monad IO, SQSEnvironment IO) => MessageQueueContainer -> MessageBody -> IO ()
+sendMessageInSQS :: (Monad IO, SQSEnvironment IO) => MessageQueueContainer -> MessageBody -> IO SendMessageResponseStatus
 sendMessageInSQS queueUrl messageBody = do
     env <- sqsEnvironment
-    void $ runResourceT $ runAWST env $ send $ SQS.sendMessage queueUrl messageBody
+    response <- runResourceT $ runAWST env $ send $ SQS.sendMessage queueUrl messageBody
+    pure $ response ^. SQS.smrsResponseStatus
 
 receiveMessageInSQS :: (Monad IO, SQSEnvironment IO) => MessageQueueContainer -> IO [Maybe (MessageReceiptHandle, MessageBody)]
 receiveMessageInSQS queueUrl = do
@@ -45,7 +46,6 @@ receiveMessageInSQS queueUrl = do
             (Just h, Just b) -> Just (h, b)
             _                -> Nothing
 
---TODO return the response for inspection if needed??
 deleteMessageInSQS :: (Monad IO, SQSEnvironment IO) => MessageQueueContainer -> MessageReceiptHandle -> IO ()
 deleteMessageInSQS queueUrl messageHandle = do
     env <- sqsEnvironment
