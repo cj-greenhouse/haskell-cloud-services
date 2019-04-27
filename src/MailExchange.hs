@@ -1,6 +1,11 @@
 module MailExchange (
     MailExchange (..),
     MailAddress,
+    MailToAddresses,
+    MailFromAddress,
+    MailSubject,
+    MailBody,
+    SendMailResponseStatus,
     SESEnvironment,
     sendMailInSES
 ) where
@@ -24,6 +29,7 @@ type SendMailResponseStatus = Int
 class MailExchange m where
     sendMail :: MailFromAddress -> MailToAddresses -> MailSubject -> MailBody -> m SendMailResponseStatus
 
+--
 class SESEnvironment m where
     sesEnvironment :: m Env
 

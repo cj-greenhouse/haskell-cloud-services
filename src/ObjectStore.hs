@@ -1,5 +1,8 @@
 module ObjectStore (
     ObjectStore (..),
+    ObjectContainer,
+    ObjectKey,
+    ObjectValue,
     S3Environment (..),
     getObjectInS3,
     putObjectInS3,
@@ -35,6 +38,7 @@ class ObjectStore m where
 class S3Environment m where
     s3Environment   :: m Env
 
+--
 -- | get content to bucket using provided S3 credentials
 getObjectInS3 :: (Monad IO, S3Environment IO) => ObjectContainer -> ObjectKey -> IO ObjectValue
 getObjectInS3 bucketName objectKey = do

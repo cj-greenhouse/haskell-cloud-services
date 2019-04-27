@@ -1,16 +1,44 @@
 # haskell-aws
 
-Simplifying wrapper for AWS SDK
+Simplifying wrapper for AWS SDKs
 
-## Example Wiring
+## Example Wirings
+
+### Mail Exchange
+
+```
+import MailExchange
+import AWS.Environment (northVirginiaDefaultEnvironment)
+
+instance MailExchange <runtime implementation> where
+    sendMail = sendMailInSES
+
+instance SESEnvironment IO where
+    sesEnvironment = northVirginiaDefaultEnvironment
+```
+### MessageQueue
+
+```
+import MessageQueue
+import AWS.Environment (defaultEnvironment)
+
+instance MailExchange <runtime implementation> where
+    sendMail = sendMailInSES
+
+instance SESEnvironment IO where
+    sendMessage = sendMessageInSQS
+    receiveMessages = receiveMessagesInSQS
+    deleteMessage = deleteMessageInSQS
+```
 
 ### Object Store
 
 ```
-import Network.AWS (newEnv, Credentials(Discover))
+import ObjectStore
+import AWS.Environment (defaultEnvironment)
 
 instance S3Environment IO where
-    s3Environment = newEnv Discover
+    s3Environment = defaultEnvironment
 
 instance ObjectStore <runtime implementation> where
     getObject   = getObjectInS3
@@ -18,18 +46,6 @@ instance ObjectStore <runtime implementation> where
     listObjects = listObjectsInS3
 ```
 
-### Mail Exchange
-
-```
-import Control.Monad.Trans.AWS (Region(NorthVirginia))
-import Network.AWS (newEnv, Credentials(Discover))
-
-instance MailExchange <runtime implementation> where
-    sendMail = sendMailInSES
-
-instance SESEnvironment IO where
-    sesEnvironment = set envRegion NorthVirginia <$> newEnv Discover
-```
 
 ## Links
 

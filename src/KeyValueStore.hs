@@ -1,9 +1,9 @@
 module KeyValueStore where
 --
-import Control.Monad.Trans.AWS                         (runAWST)
-import Data.Text                                       (Text)
-import Network.AWS                                     (runResourceT, send)
-import Network.AWS.Env  (Env)
+-- import Control.Monad.Trans.AWS (runAWST)
+import Data.Text               (Text)
+-- import Network.AWS             (runResourceT, send)
+import Network.AWS.Env         (Env)
 --
 type KeyValueContainer              = Text
 type KeyValuePutResponseStatus      = Int
