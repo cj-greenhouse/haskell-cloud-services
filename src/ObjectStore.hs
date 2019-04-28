@@ -40,7 +40,7 @@ class S3Environment m where
 
 --
 -- | get content to bucket using provided S3 credentials
-getObjectInS3 :: (Monad IO, S3Environment IO) => ObjectContainer -> ObjectKey -> IO ObjectValue
+getObjectInS3 :: (S3Environment IO) => ObjectContainer -> ObjectKey -> IO ObjectValue
 getObjectInS3 bucketName objectKey = do
     env <- s3Environment
     l <- runResourceT . runAWST env $ do
@@ -49,7 +49,7 @@ getObjectInS3 bucketName objectKey = do
     pure $ BS.concat l
 
 -- | put content to bucket using provided credentials
-putObjectInS3 :: (Monad IO, S3Environment IO) => ObjectContainer -> ObjectKey -> ObjectValue -> IO ()
+putObjectInS3 :: (S3Environment IO) => ObjectContainer -> ObjectKey -> ObjectValue -> IO ()
 putObjectInS3 bucketName objectKey content = do
     let req = AWS.putObject
                 (AWS.BucketName bucketName)
@@ -61,7 +61,7 @@ putObjectInS3 bucketName objectKey content = do
         Left(err) -> putStrLn(show err)
         Right(_) -> pure ()
 
-listObjectsInS3 :: (Monad IO, S3Environment IO) => ObjectContainer -> IO [ObjectKey]
+listObjectsInS3 :: (S3Environment IO) => ObjectContainer -> IO [ObjectKey]
 listObjectsInS3 bucketName = do
     responseStream <- paginate $ listObjectsV2 $ AWS.BucketName bucketName
     let ks = join $ view lovrsContents <$> responseStream
