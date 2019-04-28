@@ -1,40 +1,21 @@
-module MessageQueue (
-    MessageQueue (..),
+module CloudServices.AWS.SQS(
     SQSEnvironment (..),
     sendMessageInSQS,
     receiveMessagesInSQS,
-    deleteMessageInSQS,
-    first
+    deleteMessageInSQS
 ) where
 --
+import CloudServices.MessageQueue (Message (..), MessageQueueContainer, MessageReceiptHandle, MessageBody, SendMessageResponseStatus)
+
 import Control.Lens                                    ((^.))
 import Control.Monad                                   (void)
 import Control.Monad.Trans.AWS                         (runAWST)
-import Data.Text                                       (Text)
 import Network.AWS                                     (runResourceT, send)
 import Network.AWS.Env                                 (Env)
 import qualified Network.AWS.SQS.DeleteMessage  as SQS (deleteMessage)
 import qualified Network.AWS.SQS.ReceiveMessage as SQS (receiveMessage, rmrsMessages)
 import qualified Network.AWS.SQS.SendMessage    as SQS (sendMessage, smrsResponseStatus)
 import Network.AWS.SQS.Types                           (mReceiptHandle, mBody)
---
-type MessageBody                = Text      --SQS limits to 256KB
-type MessageReceiptHandle       = Text
-type MessageQueueContainer      = Text
-type SendMessageResponseStatus  = Int
-
-data Message =
-    Message MessageReceiptHandle MessageBody
-    deriving (Eq, Show)
-
-class MessageQueue m where
-    sendMessage     :: MessageQueueContainer -> MessageBody -> m SendMessageResponseStatus
-    receiveMessages :: MessageQueueContainer -> m [Maybe Message]
-    deleteMessage   :: MessageQueueContainer -> MessageReceiptHandle -> m ()
-
-first :: [Maybe Message] -> Maybe Message
-first [] = Nothing
-first xs = head xs
 --
 class SQSEnvironment m where
     sqsEnvironment :: m Env

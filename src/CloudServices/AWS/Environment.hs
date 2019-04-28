@@ -1,13 +1,13 @@
-module AWS.Environment (
+module CloudServices.AWS.Environment (
     defaultEnvironment,
     northVirginiaDefaultEnvironment,
     northernCaliforniaDefaultEnvironment
 ) where
 --
-import Control.Lens             (set)
-import Control.Monad.Trans.AWS  (Region(NorthCalifornia, NorthVirginia))
-import Network.AWS.Auth         (Credentials(Discover))
-import Network.AWS.Env          (Env, newEnv, envRegion)
+import Control.Lens (set)
+import Control.Monad.Trans.AWS (Region(NorthCalifornia, NorthVirginia))
+import Network.AWS.Auth (Credentials(Discover))
+import Network.AWS.Env (Env, newEnv, envRegion)
 --
 defaultEnvironment :: IO Env
 defaultEnvironment = newEnv Discover
