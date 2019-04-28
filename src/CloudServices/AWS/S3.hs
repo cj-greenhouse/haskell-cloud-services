@@ -10,7 +10,7 @@ import CloudServices.ObjectStore(ObjectContainer, ObjectKey, ObjectValue)
 import Conduit
 import Control.Exception                         (try, SomeException)
 import Control.Lens                              (view)
-import Control.Monad                             (void, join)
+import Control.Monad                             (void)
 import Control.Monad.Trans.AWS                   (sinkBody, runAWST, Rs)
 import qualified Control.Monad.Trans.AWS as AWS  (send, paginate)
 import qualified Data.ByteString as BS           (concat)
@@ -32,7 +32,7 @@ getObjectInS3 bucketName objectKey = do
     l <- runResourceT . runAWST env $ do
         let bn = AWS.BucketName bucketName
             ok = AWS.ObjectKey objectKey
-        rs <- view AWS.gorsBody <$> (AWS.send $ AWS.getObject bn ok)
+        rs <- view AWS.gorsBody <$> AWS.send (AWS.getObject bn ok)
         sinkBody rs sinkList
     pure $ BS.concat l
 
@@ -51,7 +51,7 @@ putObjectInS3 bucketName objectKey content = do
 listObjectsInS3 :: (S3Environment IO) => ObjectContainer -> IO [ObjectKey]
 listObjectsInS3 bucketName = do
     responseStream <- paginate $ listObjectsV2 $ AWS.BucketName bucketName
-    let ks = join $ view lovrsContents <$> responseStream
+    let ks = view lovrsContents =<< responseStream
     pure $  view  (AWS.keyName ' ') <$> (view AWS.oKey <$> ks)
     where
         paginate :: (AWSPager a) => a -> IO [Rs a]
