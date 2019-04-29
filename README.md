@@ -8,19 +8,20 @@ Simplifying wrapper for AWS SDKs
 
 ```
 import CloudServices     (MailExchange (..))
-import CloudServices.AWS (SESEnvironment, northVirginiaDefaultEnvironment)
+import CloudServices.AWS (SESEnvironment, awsNorthVirginiaDefaultEnv)
 
 instance MailExchange <runtime implementation> where
     sendMail = sendMailInSES
 
 instance SESEnvironment IO where
-    sesEnvironment = northVirginiaDefaultEnvironment
+    sesEnvironment = awsNorthVirginiaDefaultEnv
 ```
+
 ### MessageQueue
 
 ```
 import CloudServices     (MessageQueue (..))
-import CloudServices.AWS (SQSEnvironment, defaultEnvironment)
+import CloudServices.AWS (SQSEnvironment, awsDefaultEnv)
 
 instance MessageQueue <runtime implementation> where
     sendMessage     = sendMessageInSQS
@@ -28,14 +29,14 @@ instance MessageQueue <runtime implementation> where
     deleteMessage   = deleteMessageInSQS
 
 instance SQSEnvironment IO where
-    sqsEnvironment  = defaultEnvironment
+    sqsEnvironment  = awsDefaultEnv
 ```
 
 ### Object Store
 
 ```
 import CloudServices      (ObjectStore (..))
-import CloudServices.AWS  (S3Environment, defaultEnvironment)
+import CloudServices.AWS  (S3Environment, awsDefaultEnv)
 
 instance ObjectStore <runtime implementation> where
     getObject   = getObjectInS3
@@ -43,9 +44,8 @@ instance ObjectStore <runtime implementation> where
     listObjects = listObjectsInS3
 
 instance S3Environment IO where
-    s3Environment = defaultEnvironment
+    s3Environment = awsDefaultEnv
 ```
-
 
 ## Links
 

@@ -1,7 +1,7 @@
 module CloudServices.AWS.Environment (
-    defaultEnvironment,
-    northVirginiaDefaultEnvironment,
-    northernCaliforniaDefaultEnvironment
+    awsDefaultEnv,
+    awsNorthVirginiaDefaultEnv,
+    awsNorthernCaliforniaDefaultEnv
 ) where
 --
 import Control.Lens (set)
@@ -9,14 +9,14 @@ import Control.Monad.Trans.AWS (Region(NorthCalifornia, NorthVirginia))
 import Network.AWS.Auth (Credentials(Discover))
 import Network.AWS.Env (Env, newEnv, envRegion)
 --
-defaultEnvironment :: IO Env
-defaultEnvironment = newEnv Discover
+awsDefaultEnv :: IO Env
+awsDefaultEnv = newEnv Discover
 
-northVirginiaDefaultEnvironment :: IO Env
-northVirginiaDefaultEnvironment = defaultEnvironment `withRegion` NorthVirginia
+awsNorthVirginiaDefaultEnv :: IO Env
+awsNorthVirginiaDefaultEnv = awsDefaultEnv `inRegion` NorthVirginia
 
-northernCaliforniaDefaultEnvironment :: IO Env
-northernCaliforniaDefaultEnvironment = defaultEnvironment `withRegion` NorthCalifornia
+awsNorthernCaliforniaDefaultEnv :: IO Env
+awsNorthernCaliforniaDefaultEnv = awsDefaultEnv `inRegion` NorthCalifornia
 
-withRegion :: IO Env -> Region -> IO Env
-withRegion env region = set envRegion region <$> env
+inRegion :: IO Env -> Region -> IO Env
+inRegion env region = set envRegion region <$> env
