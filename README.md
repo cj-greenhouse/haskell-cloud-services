@@ -7,8 +7,8 @@ Simplifying wrapper for AWS SDKs
 ### Mail Exchange
 
 ```
-import MailExchange
-import AWS.Environment (northVirginiaDefaultEnvironment)
+import CloudServices     (MailExchange (..))
+import CloudServices.AWS (SESEnvironment, northVirginiaDefaultEnvironment)
 
 instance MailExchange <runtime implementation> where
     sendMail = sendMailInSES
@@ -19,31 +19,31 @@ instance SESEnvironment IO where
 ### MessageQueue
 
 ```
-import MessageQueue
-import AWS.Environment (defaultEnvironment)
+import CloudServices     (MessageQueue (..))
+import CloudServices.AWS (SQSEnvironment, defaultEnvironment)
 
-instance MailExchange <runtime implementation> where
-    sendMail = sendMailInSES
-
-instance SESEnvironment IO where
-    sendMessage = sendMessageInSQS
+instance MessageQueue <runtime implementation> where
+    sendMessage     = sendMessageInSQS
     receiveMessages = receiveMessagesInSQS
-    deleteMessage = deleteMessageInSQS
+    deleteMessage   = deleteMessageInSQS
+
+instance SQSEnvironment IO where
+    sqsEnvironment  = defaultEnvironment
 ```
 
 ### Object Store
 
 ```
-import ObjectStore
-import AWS.Environment (defaultEnvironment)
-
-instance S3Environment IO where
-    s3Environment = defaultEnvironment
+import CloudServices      (ObjectStore (..))
+import CloudServices.AWS  (S3Environment, defaultEnvironment)
 
 instance ObjectStore <runtime implementation> where
     getObject   = getObjectInS3
     putObject   = putObjectInS3
     listObjects = listObjectsInS3
+
+instance S3Environment IO where
+    s3Environment = defaultEnvironment
 ```
 
 
