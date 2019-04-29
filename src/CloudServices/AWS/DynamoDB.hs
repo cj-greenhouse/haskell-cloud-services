@@ -1,4 +1,6 @@
-module CloudServices.AWS.DynamoDB where
+module CloudServices.AWS.DynamoDB (
+    DynamoDBEnvironment
+) where
 --
 import Network.AWS.Env  (Env)
 

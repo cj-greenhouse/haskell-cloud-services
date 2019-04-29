@@ -1,9 +1,4 @@
-module CloudServices.ObjectStore (
-    ObjectStore (..),
-    ObjectContainer,
-    ObjectKey,
-    ObjectValue,
-) where
+module CloudServices.ObjectStore where
 --
 import qualified Data.ByteString as BS (ByteString)
 import           Data.Text       (Text)

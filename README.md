@@ -1,4 +1,4 @@
-# haskell-aws
+# haskell-cloud-services
 
 Simplifying wrapper for AWS SDKs
 
