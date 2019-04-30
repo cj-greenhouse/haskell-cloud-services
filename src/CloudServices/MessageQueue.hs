@@ -1,6 +1,6 @@
 module CloudServices.MessageQueue where
 --
-import Data.Text                                       (Text)
+import Data.Text (Text)
 --
 type MessageBody                = Text      --SQS limits to 256KB
 type MessageReceiptHandle       = Text

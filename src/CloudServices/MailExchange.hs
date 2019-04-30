@@ -1,6 +1,6 @@
 module CloudServices.MailExchange where
 --
-import Data.Text                (Text)
+import Data.Text (Text)
 
 type MailToAddresses        = [MailAddress]
 type MailFromAddress        = MailAddress
