@@ -1,4 +1,4 @@
-module SpecUtils where
+module Spec.Helper where
 
 import Test.Tasty.HUnit ((@?=), assertBool, Assertion)
 
