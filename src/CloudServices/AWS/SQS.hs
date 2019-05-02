@@ -5,6 +5,8 @@ module CloudServices.AWS.SQS(
     deleteMessageInSQS
 ) where
 --
+-- amazonka: https://hackage.haskell.org/package/amazonka-sqs
+--
 import CloudServices.MessageQueue (Message (..), MessageQueueContainer, MessageReceiptHandle, MessageBody, SendMessageResponseStatus)
 
 import Control.Lens                                    ((^.))
@@ -12,10 +14,10 @@ import Control.Monad                                   (void)
 import Control.Monad.Trans.AWS                         (runAWST)
 import Network.AWS                                     (runResourceT, send)
 import Network.AWS.Env                                 (Env)
-import qualified Network.AWS.SQS.DeleteMessage  as SQS (deleteMessage)
-import qualified Network.AWS.SQS.ReceiveMessage as SQS (receiveMessage, rmrsMessages)
-import qualified Network.AWS.SQS.SendMessage    as SQS (sendMessage, smrsResponseStatus)
-import Network.AWS.SQS.Types                           (mReceiptHandle, mBody)
+import qualified Network.AWS.SQS.DeleteMessage  as SQS (deleteMessage)                      -- https://hackage.haskell.org/package/amazonka-sqs-1.6.1/docs/Network-AWS-SQS-DeleteMessage.html
+import qualified Network.AWS.SQS.ReceiveMessage as SQS (receiveMessage, rmrsMessages)       -- https://hackage.haskell.org/package/amazonka-sqs-1.6.1/docs/Network-AWS-SQS-ReceiveMessage.html
+import qualified Network.AWS.SQS.SendMessage    as SQS (sendMessage, smrsResponseStatus)    -- https://hackage.haskell.org/package/amazonka-sqs-1.6.1/docs/Network-AWS-SQS-SendMessage.html
+import Network.AWS.SQS.Types                           (mReceiptHandle, mBody)              -- https://hackage.haskell.org/package/amazonka-sqs-1.6.1/docs/Network-AWS-SQS-Types.html
 --
 class SQSEnvironment m where
     sqsEnvironment :: m Env

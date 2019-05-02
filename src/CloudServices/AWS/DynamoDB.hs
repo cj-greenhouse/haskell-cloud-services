@@ -2,6 +2,8 @@ module CloudServices.AWS.DynamoDB (
     DynamoDBEnvironment
 ) where
 --
+-- https://hackage.haskell.org/package/amazonka-dynamodb
+--
 import Network.AWS.Env  (Env)
 
 class DynamoDBEnvironment m where

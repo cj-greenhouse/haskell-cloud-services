@@ -3,6 +3,8 @@ module CloudServices.AWS.SES (
     sendMailInSES
 ) where
 --
+-- https://hackage.haskell.org/package/amazonka-ses
+--
 import CloudServices.MailExchange(MailFromAddress, MailToAddresses, MailSubject, MailBody, SendMailResponseStatus)
 
 import Control.Monad.Trans.AWS  (runAWST)

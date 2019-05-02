@@ -5,6 +5,8 @@ module CloudServices.AWS.S3 (
     listObjectsInS3
 ) where
 --
+-- https://hackage.haskell.org/package/amazonka-s3
+--
 import CloudServices.ObjectStore(ObjectContainer, ObjectKey, ObjectValue)
 
 import Conduit

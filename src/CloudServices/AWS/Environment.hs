@@ -4,6 +4,9 @@ module CloudServices.AWS.Environment (
     awsNorthernCaliforniaDefaultEnv
 ) where
 --
+-- https://hackage.haskell.org/package/amazonka-1.6.1/docs/Network-AWS-Auth.html
+-- https://hackage.haskell.org/package/amazonka-1.6.1/docs/Network-AWS-Env.html
+--
 import Control.Lens (set)
 import Control.Monad.Trans.AWS (Region(NorthCalifornia, NorthVirginia))
 import Network.AWS.Auth (Credentials(Discover))
